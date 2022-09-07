@@ -1,6 +1,6 @@
 import psycopg2
 import pandas as pd
-import database as database
+import database
 from database import Session
 
 

@@ -1,5 +1,5 @@
 import requests 
-import database as database
+import database
 import pandas as pd
 import os
 from database import Session
