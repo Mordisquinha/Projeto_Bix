@@ -1,42 +1,17 @@
-import psycopg2
 import pandas as pd
-import database
-from database import Session
+from funcoes_db import Connect_db
 
+conexao = Connect_db()
+db = conexao.db
+conn = conexao.consultar_db(conexao.select_venda)
 
-db = Session()
+if __name__ == '__main__':
+    if conn:
+        df = pd.DataFrame(conn, columns=['id_venda', 'id_funcionario', 'id_categoria', 'data_venda', 'venda'])
+        conexao.truncate_vendas()
+        df.to_sql('vendas', con=conexao.engine, if_exists='append', index=False)
 
-def conecta_db():
-  conexao = psycopg2.connect(host='34.173.103.16', 
-                         database='postgres',
-                         user='junior', 
-                         password='|?7LXmg+FWL&,2(')
-  return conexao
+    else:
+        print('Não foi possível conectar ao banco de dados postgresql')
 
-
-def consultar_db(sql):
-  conexao = conecta_db()
-  cursor = conexao.cursor()
-  cursor.execute(sql)
-  resultado = cursor.fetchall()
-  registros = []
-  for rec in resultado:
-    registros.append(rec)
-  conexao.close()
-  return registros
-
-
-sql = """SELECT * FROM public.venda"""
-conn = consultar_db(sql)
-if conn:
-    df = pd.DataFrame(conn, columns=['id_venda', 'id_funcionario', 'id_categoria', 'data_venda', 'venda'])
-
-    db.execute('SET FOREIGN_KEY_CHECKS = 0;')
-    db.execute('truncate vendas;')
-    db.execute('SET FOREIGN_KEY_CHECKS = 1')
-
-    df.to_sql('vendas', con=database.engine, if_exists='append', index=False)
-else:
-    print('Não foi possível conectar ao banco de dados postgresql')
-
-print('Fim da etapa postgress'.center(100, '-'))
+    print('Fim da etapa postgress'.center(100, '-'))

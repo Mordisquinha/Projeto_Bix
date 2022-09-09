@@ -1,23 +1,13 @@
-import pymysql.cursors 
+from funcoes_db import Connect_db
 
-
-
-def conecta_db():
-  conexao = pymysql.connect(host='mysqlpessoal.chfthweo9mu0.us-west-2.rds.amazonaws.com',
-                            user='gsantiago',
-                            password='11235813',
-                            database='rel',
-                            cursorclass=pymysql.cursors.DictCursor)
-  return conexao
-
-a = conecta_db()
-print(a)
 
 def insert_db(sql):
-    with sql as s:
-        script = s.read().replace('\n', ' ')
+    with sql as arquivo_sql:
+        script = arquivo_sql.read().replace('\n', ' ')
 
-    conexao = conecta_db()
+    conexao = Connect_db()
+    conexao = conexao.conecta_db()
+
     with conexao:
         with conexao.cursor() as cursor:
             cursor.execute(script)

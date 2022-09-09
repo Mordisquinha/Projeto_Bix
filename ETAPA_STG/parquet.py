@@ -1,36 +1,27 @@
-import requests 
-import database
-import pandas as pd
 import os
-from database import Session
+import requests 
+import pandas as pd
+from funcoes_db import Connect_db
 
-
-db = Session()
+conexao = Connect_db()
+db = conexao.db
 
 def download_parquet():
     link = 'https://storage.googleapis.com/challenge_junior/categoria.parquet'
-
     response = requests.get(link)
     open('categoria.parquet', 'wb').write(response.content)
+    print('Arquivo: categoria.parquet baixado.')
+    return response
+if __name__ == '__main__':
+    if download_parquet():
+        parquet = pd.read_parquet('categoria.parquet', engine='pyarrow')
+        df = parquet.rename({'id':'id_categoria', 'nome_categoria':'categoria'}, axis=1)
+        conexao.truncate_categorias()
+        df.to_sql('categorias', con=conexao.engine, if_exists='append', index=False)
 
-    return 'Arquivo: categoria.parquet baixado.'
+    else:
+        print('Não foi possível baixar o arquivo .parquet')
 
-paquet = download_parquet()
-print(paquet)
-if paquet:
-    parquet = pd.read_parquet('categoria.parquet', engine='pyarrow')
-
-    df = parquet.rename({'id':'id_categoria', 'nome_categoria':'categoria'}, axis=1)
-
-    db.execute('SET FOREIGN_KEY_CHECKS = 0;')
-    db.execute('truncate categorias;')
-    db.execute('SET FOREIGN_KEY_CHECKS = 1')
-
-    df.to_sql('categorias', con=database.engine, if_exists='append', index=False)
-
-else:
-    print('Não foi possível baixar o arquivo .parquet')
-
-os.remove('./categoria.parquet')
-print('Arquivo: categoria.parquet deletado.')
-print('Fim da etapa api'.center(100, '-'))
+    os.remove('./categoria.parquet')
+    print('Arquivo: categoria.parquet deletado.')
+    print('Fim da etapa parquet'.center(100, '-'))
