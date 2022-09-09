@@ -1,6 +1,9 @@
+import os
 import psycopg2
+from dotenv import load_dotenv
 from database import Session, engine
 
+load_dotenv()
 class Connect_db:
     def __init__(self):
         self.db = Session()
@@ -10,10 +13,10 @@ class Connect_db:
     def conecta_db(self):
         print("conectando ao banco de dados...")
         try:
-            self.conexao = psycopg2.connect(host='34.173.103.16', 
-                                    database='postgres',
-                                    user='junior', 
-                                    password='|?7LXmg+FWL&,2(')
+            self.conexao = psycopg2.connect(host=os.getenv("HOST"), 
+                                    database=os.getenv("DATABASE"),
+                                    user=os.getenv("USER"), 
+                                    password=os.getenv("PASSWORD"))
             print("conexão estabelecida.")
 
             return self.conexao
