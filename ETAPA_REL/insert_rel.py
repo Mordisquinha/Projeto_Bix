@@ -15,15 +15,15 @@ def insert_db(sql):
     return script
 
 print('Alimentando a tabela categorias...') 
-categorias = open('./ETAPA_REL/insert_categorias.sql', 'r')
+categorias = open('./insert_categorias.sql', 'r')
 insert_db(categorias)
 
 print('Alimentando a tabela funcionarios...')
-funcionarios = open('./ETAPA_REL/insert_funcionarios.sql', 'r')
+funcionarios = open('./insert_funcionarios.sql', 'r')
 insert_db(funcionarios)
 
 print('Alimentando a tabela vendas...')
-vendas = open('./ETAPA_REL/insert_vendas.sql', 'r')
+vendas = open('./insert_vendas.sql', 'r')
 insert_db(vendas)
 
 print('Fim da etapa insert_rel'.center(100, '-'))
