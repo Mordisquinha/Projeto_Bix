@@ -12,6 +12,7 @@ def download_parquet():
     open('categoria.parquet', 'wb').write(response.content)
     print('Arquivo: categoria.parquet baixado.')
     return response
+    
 if __name__ == '__main__':
     if download_parquet():
         parquet = pd.read_parquet('categoria.parquet', engine='pyarrow')
