@@ -1,3 +1,4 @@
+import os
 import psycopg2
 from database import Session, engine
 
@@ -6,19 +7,24 @@ class Connect_db:
         self.db = Session()
         self.select_venda = """SELECT * FROM public.venda"""
         self.engine = engine
+        self.host = os.environ['HOST_BIX']
+        self.database = os.environ['DATABASE_BIX']
+        self.user = os.environ['USER_BIX']
+        self.password = os.environ['PASSWORD_BIX']
 
     def conecta_db(self):
         print("conectando ao banco de dados...")
         try:
-            self.conexao = psycopg2.connect(host='34.173.103.16', 
-                                    database='postgres',
-                                    user='junior', 
-                                    password='|?7LXmg+FWL&,2(')
-            print("conexão estabelecida.")
+            self.conexao = psycopg2.connect(host=self.host,
+                                    database=self.database,
+                                    user=self.user,
+                                    password=self.password)
+            print("conexÃ£o estabelecida.")
 
             return self.conexao
-        except:
-           return "conexão recusada."
+        except: 
+           print("conexÃ£o recusada.")
+           return self.conexao
 
 
     def consultar_db(self, sql):
