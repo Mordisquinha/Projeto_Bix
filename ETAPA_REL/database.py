@@ -1,7 +1,8 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-engine = create_engine('mysql://gsantiago:11235813@mysqlpessoal.chfthweo9mu0.us-west-2.rds.amazonaws.com/rel',
+engine = create_engine(os.environ['ENGINE_SQLALCHEMY_PESSOAL'],
     echo=True)
 
 Base = declarative_base()
