@@ -4,7 +4,7 @@ Planejado e desenvolvido por Gabriel Santiago.
 
 A - Sobre o Projeto:
 
-    O projeto nada mais é que minha resolução ao desafio proposto, o qual se baseia em:
+    O projeto consiste na resolução ao desafio proposto, o qual se baseia em:
 
         1 - Consumir dados de uma tabela de vendas do banco de dados postgresql dado pelo desafiante.
 
@@ -15,15 +15,15 @@ A - Sobre o Projeto:
         4 - Criar uma pipeline para movimentar esses dados para um banco de dados pessoal onde o objetivo é no final ter
         as vendas, os funcionários e as categorias em um só lugar.
 
-        5 - Tendo o requisito de: essa movimentação de dados tem que ser feita diariamente, pois essas fontes de dados são alimentadas periodicamente. Por isso, é necessário o uso de um orquestrador, no caso deste projeto, o Airflow.
+        5 - Tendo o requisito de: realizar a movimentação dos dados diariamente, pois essas fontes de dados são alimentadas periodicamente. Por isso, é necessário o uso de um orquestrador, no caso deste projeto, o Airflow.
 
-B - Sobre a estruturação deste projeto:
+B - Sobre a estruturação do projeto:
 
-    O projeto é estruturado primordialmente pela divisão entra a etapa stage e a etapa relacional.
+    O projeto é estruturado primordialmente pela divisão entra as etapas stage e relacional.
 
-    Na etapa stage, os dados brutos de vendas, funcionario e categorias é carregado no schema stg do banco de dados mysql.
+    Na etapa stage, os dados brutos de vendas, funcionário e categorias é carregado no schema stg do banco de dados mysql.
 
-    Na etapa rel, adicionam-se as colunas de inserção base e exclusão lógica ao final da tabela, para assim melhor garantir o melhor controle no processo de etl.
+    Na etapa rel, adicionam-se as colunas de inserção base e exclusão lógica ao final da tabela, para assim garantir o melhor controle no processo de etl.
 
     1 - Etapa Stage:
 
@@ -44,8 +44,8 @@ B - Sobre a estruturação deste projeto:
 
             2 - arquivo database.py:
 
-                Neste esta a credencial necessária para criar a engine no sql alchemy e algumas variáveis que irão ser
-                necessárias para ao longo do projeto.
+                Aqui está a credencial necessária para criar a engine no sql alchemy e algumas variáveis que irão ser
+                necessárias ao longo do projeto.
             
             3 - arquivo create_db.py:
 
@@ -53,14 +53,14 @@ B - Sobre a estruturação deste projeto:
 
         Arquivo funcoes_db.py:
 
-            Este arquivo é onde escrevi a classe "Connect_db()" onde possúi todas as funções e métodos que irão ser
+            Aqui foi escrita a classe "Connect_db()", onde estão todas as funções e métodos que irão ser
             usados ao longo do processo de etl, como querys e inserts nas tabelas do mysql.
 
         Ariquivo api.py:
 
-            Este é reponsável pela consulta à api cedida para o projeto onde existe a verificação da possibílidade do aumento do número de id's nesta.
+            Este é reponsável pela consulta à api, cedida para o projeto, em que existe a verificação da possibilidade do aumento do número de id's nesta.
 
-            Ela faz a consulta de id por id começando por um até o último valor presente na api e insere o funcionário e
+            Ela faz a consulta de id por id começando de 1 até o último valor presente na api, e insere o funcionário e
             o id do mesmo na tabela de funcionário no mysql.
 
         Arquivo parquet.py:
@@ -81,7 +81,7 @@ B - Sobre a estruturação deste projeto:
         objeto, assim como na etapa stg, o mesmo vale para os arquivos models.py, database.py, create_db.py e 
         funcoes_db.py, pois todos estes arquivos tem o mesmo propósito nesta etapa.
 
-        Fora este detalhe a etapa rel é dividida em mais duas partes:
+        Além disso, a etapa rel é dividida em mais duas partes:
 
         Arquivos .sql:
 
@@ -103,12 +103,15 @@ B - Sobre a estruturação deste projeto:
     
 C - Notas finais:
 
-    1 - Este projeto está inteiramente na núvem, as pastas "ETAPA_STG" e "ETAPA_REL" estão em uma máquina ec2 na aws (servidor_bix) e
+    1 - Este projeto está inteiramente na nuvem, as pastas "ETAPA_STG" e "ETAPA_REL" estão em uma máquina ec2 na aws (servidor_bix) e
     o airflow junto com o arquivo "dag.py" está hospedado em outra máquina ec2 (Airflow). Ambas se comunicam através de ssh com o operador de ssh pertencente ao airflow.
 
     2 - Todas as credenciais e informações sensíveis estão alocadas em variáveis de ambientes no servidor_bix e são usadas no código a partir da biblioteca "os".
 
-D -  Tecnolodias usadas: 
+    3 - Todas as tabelas stages são truncadas no início do processo de inserção e carregadas com os dados da própria fonte, somente as tabelas
+    relacionais que possuem a inserção incremental, pois só recebem os dados que elas não contém. 
+
+D -  Tecnologias usadas: 
 
     1 - aws ec2:
 
