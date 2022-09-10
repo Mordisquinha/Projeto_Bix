@@ -1,3 +1,4 @@
+import os
 import pymysql.cursors 
 
 class Connect_db:
