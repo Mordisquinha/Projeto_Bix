@@ -111,6 +111,8 @@ C - Notas finais:
     3 - Todas as tabelas stages são truncadas no início do processo de inserção e carregadas com os dados da própria fonte, somente as tabelas
     relacionais que possuem a inserção incremental, pois só recebem os dados que elas não contém. 
 
+    4 - A aplicação Airflow no projeto foi subida através de uma imagem docker fornecida pela própria documentação do Airflow e usou docker compose para levantar todos os containers necessários para esta aplicação rodar.
+
 D -  Tecnologias usadas: 
 
     1 - aws ec2:
@@ -145,3 +147,11 @@ D -  Tecnologias usadas:
 
         sistema operacional usado nos servidores para hospedagem, conhecimento usado também para a definição das variáveis de ambiente a fim
         de ocultar as informações sensíveis ao longo do processo de etl.
+
+    9 -  docker & docker-compose:
+
+        usado para o upload da aplicação Airflow.
+
+    10 - git & github:
+
+        para o versionamento do projeto.
